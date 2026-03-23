@@ -7,8 +7,8 @@ from typing import List, Tuple, Optional
 
 # Initializations--------------------------------------------------------------------------------------------------------------------------
 API_TOKEN   = os.getenv("API_TOKEN")
-BIND_HOST   = os.getenv("BIND_HOST", "127.0.0.1") # 0.0.0.0
-PORT        = int(os.getenv("PORT", "8010"))
+BIND_HOST   = os.getenv("BIND_HOST", "0.0.0.0") # 127.0.0.1
+PORT        = int(os.getenv("PORT", "10000")) #8010
 MAX_BODY_B  = int(os.getenv("MAX_BODY_BYTES", "1048576"))  # 2^20
 
 # Split End of text
@@ -270,7 +270,7 @@ class Handler(BaseHTTPRequestHandler):
 # Entrypoint-------------------------------------------------------------------------------------------------------------
 def run():
     httpd = HTTPServer((BIND_HOST, PORT), Handler)
-    print(f"Serving on http://{BIND_HOST}:{PORT}")
+    print(f"Serving on http://{BIND_HOST}:{PORT}", flush=True)
     print("Endpoints:\n  GET  /healthz\n  POST /summarize")
     if API_TOKEN:
         print("Auth: Authorization: Bearer <API_TOKEN>  (or x-api-key)")
