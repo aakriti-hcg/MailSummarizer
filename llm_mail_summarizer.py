@@ -7,8 +7,8 @@ from typing import List, Tuple, Optional
 
 # Initializations--------------------------------------------------------------------------------------------------------------------------
 API_TOKEN   = os.getenv("API_TOKEN")
-BIND_HOST   = os.getenv("BIND_HOST", "0.0.0.0") # 127.0.0.1
-PORT        = int(os.getenv("PORT", "10000")) #8010
+BIND_HOST   = os.getenv("BIND_HOST", "127.0.0.1") # 127.0.0.1
+PORT        = int(os.getenv("PORT", "8010")) #8010
 MAX_BODY_B  = int(os.getenv("MAX_BODY_BYTES", "1048576"))  # 2^20
 
 # Split End of text
@@ -227,10 +227,14 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         if payload is not None:
             self.wfile.write(json.dumps(payload).encode("utf-8"))
-
+    
     def do_GET(self):
+        if self.path == "/":
+            return self._send(200, {"status": "running"})
+
         if self.path == "/healthz":
             return self._send(200, {"status": "ok"})
+
         return self._send(404, {"detail": "Not Found"})
 
     def do_POST(self):
