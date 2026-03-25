@@ -1,0 +1,88 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Mail Chain Summarizer API",
+    "description": "API to summarize email chains using LLM",
+    "version": "1.0.0"
+  },
+  "host": "https://mailsummarizer.onrender.com",
+  "basePath": "/",
+  "schemes": ["https"],
+  "paths": {
+    "/healthz": {
+      "get": {
+        "summary": "Health check",
+        "operationId": "getHealth",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Service is running",
+            "schema": {
+              "$ref": "#/definitions/HealthResponse"
+            }
+          }
+        }
+      }
+    },
+    "/summarize": {
+      "post": {
+        "summary": "Summarize email text",
+        "operationId": "summarizeText",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Text to summarize",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SummarizeRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Summary generated",
+            "schema": {
+              "$ref": "#/definitions/SummarizeResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "HealthResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "ok"
+        }
+      }
+    },
+    "SummarizeRequest": {
+      "type": "object",
+      "required": ["text"],
+      "properties": {
+        "text": {
+          "type": "string",
+          "example": "Hello, please find the attached report..."
+        }
+      }
+    },
+    "SummarizeResponse": {
+      "type": "object",
+      "properties": {
+        "summary": {
+          "type": "string",
+          "example": "The email requests review of an attached report."
+        }
+      }
+    }
+  }
+}
